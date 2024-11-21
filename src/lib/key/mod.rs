@@ -26,10 +26,10 @@ pub enum KeyVariant {
 #[derive(Debug, PartialEq, Eq)]
 pub struct Key {
     /// `D` or `E` part of the key.
-    pub(crate) exponent: BigUint,
+    pub exponent: BigUint,
     /// `N` part of the key.
-    pub(crate) modulus: BigUint,
-    pub(crate) variant: KeyVariant,
+    pub modulus: BigUint,
+    pub variant: KeyVariant,
 }
 
 /// Contains both the Public and Private keys.

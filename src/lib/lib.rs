@@ -8,4 +8,4 @@
 pub mod encoding;
 pub mod error;
 pub mod key;
-mod math;
+pub mod math;
