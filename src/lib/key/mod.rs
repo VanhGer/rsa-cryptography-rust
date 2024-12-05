@@ -10,11 +10,11 @@ mod generation;
 mod str;
 
 /// Enum to dictate if Key is a Public or Private key.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum KeyVariant {
     /// Has a modulus, and can also have a non default exponent.
     PublicKey,
-    /// Always has both an modulus and exponent.
+    /// Always has both and modulus and exponent.
     PrivateKey,
 }
 
@@ -23,7 +23,7 @@ pub enum KeyVariant {
 /// In the case of a Public key with a default exponent, it is still present in the struct,
 /// but can be recognized via the [`IsDefaultExponent`] trait, which is
 /// implemented for [`BigUint`].
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Key {
     /// `D` or `E` part of the key.
     pub exponent: BigUint,
@@ -33,7 +33,7 @@ pub struct Key {
 }
 
 /// Contains both the Public and Private keys.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct KeyPair {
     pub public_key: Key,
     pub private_key: Key,

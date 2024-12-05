@@ -37,7 +37,7 @@ impl KeyPair {
             Key::KEY_SIZE_RANGE.contains(&key_size),
             "Key size not supported!"
         );
-        printf!(pp, "Generating key with {key_size} bits\n");
+        // printf!(pp, "Generating key with {key_size} bits\n");
 
         let max_bits = key_size / 2;
         let mut attempts = 0u32;
@@ -46,26 +46,26 @@ impl KeyPair {
 
         loop {
             attempts += 1;
-            printf!(pp, "\nAttempt number {attempts}\nGenerating P...");
+            // printf!(pp, "\nAttempt number {attempts}\nGenerating P...");
             p = gen.random_prime(max_bits);
-            printf!(pp, "DONE\nGenerating Q...");
+            // printf!(pp, "DONE\nGenerating Q...");
             q = gen.random_prime(max_bits);
             while p == q {
                 q = gen.random_prime(max_bits);
             }
-            printf!(pp, "DONE\nCalculating Public/Private Key's Modulus (N)...");
+            // printf!(pp, "DONE\nCalculating Public/Private Key's Modulus (N)...");
             n = p
                 .checked_mul(&q)
                 .expect("Checked multiplication of Big Integers failed.");
-            printf!(pp, "DONE\n");
+            // printf!(pp, "DONE\n");
             totn = (&p - 1u8) * (&q - 1u8);
 
             if use_default_exponent {
-                printf!(pp, "Using default exponent...DONE\n");
+                // printf!(pp, "Using default exponent...DONE\n");
                 e = BigUint::from(Key::DEFAULT_EXPONENT);
                 assert!(e < totn, "Tot(N) is smaller than the default exponent");
             } else {
-                printf!(pp, "Calculating Public Key's Exponent (E)...");
+                // printf!(pp, "Calculating Public Key's Exponent (E)...");
                 e = gen.random_prime(max_bits);
                 while e >= totn {
                     e = gen.random_prime(max_bits);
@@ -73,18 +73,18 @@ impl KeyPair {
                 printf!(pp, "DONE\n");
             }
 
-            printf!(pp, "Calculating Private Key's Exponent (D)...");
+            // printf!(pp, "Calculating Private Key's Exponent (D)...");
             let (_, d_tmp, _) = euclides_extended(&e, &totn);
             d = d_tmp.abs().to_biguint().unwrap();
             d = (d % &totn + &totn) % &totn;
 
             if (&e * &d % &totn) == One::one() {
-                printf!(pp, "DONE\n");
+                // printf!(pp, "DONE\n");
                 break;
             }
-            printf!(pp, "\nCould not find a valid Private Key...RETRYING\n");
+            // printf!(pp, "\nCould not find a valid Private Key...RETRYING\n");
         }
-        printf!(pp, "\nKey Pair successfully generated\n");
+        // printf!(pp, "\nKey Pair successfully generated\n");
 
         let key_pair = KeyPair {
             public_key: Key {
@@ -102,18 +102,18 @@ impl KeyPair {
         assert!(key_pair.is_valid());
 
         if print_results {
-            println!("Max bits for N: {key_size}");
-            println!("Max bits for P and Q: {max_bits}");
-            println!("Attempts needed: {attempts}");
-            println!("The values calculated were:");
-            println!("P = {p}");
-            println!("Q = {q}");
-            println!("N = {n}");
-            println!("Tot(N) = {totn}");
+            // println!("Max bits for N: {key_size}");
+            // println!("Max bits for P and Q: {max_bits}");
+            // println!("Attempts needed: {attempts}");
+            // println!("The values calculated were:");
+            // println!("P = {p}");
+            // println!("Q = {q}");
+            // println!("N = {n}");
+            // println!("Tot(N) = {totn}");
             if !use_default_exponent {
-                println!("E (Non default) = {e}");
+                // println!("E (Non default) = {e}");
             }
-            println!("D = {d}");
+            // println!("D = {d}");
         }
 
         key_pair
